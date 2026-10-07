@@ -1,0 +1,6 @@
+﻿Etapa,FilasEntrada,FilasSalida,Detalle
+EXTRACCION,10000,10000,Lectura del CSV fuente con separador ';'.
+LIMPIEZA_DUPLICADOS,10000,9998,Se eliminaron 2 duplicados exactos.
+NORMALIZACION,10000,9998,Edad negativa tratada como desconocida: 1; fechas inválidas descartadas: 0.
+CARGA_MODELO_DIMENSIONAL,9998,9998,"DimTiempo=5, DimEstablecimiento=361, DimPaciente=995, DimServicio=63."
+FIN,9998,9998,ETL completado en 0.10 segundos.
