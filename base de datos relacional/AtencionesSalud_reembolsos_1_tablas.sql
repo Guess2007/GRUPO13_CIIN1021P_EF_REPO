@@ -1,11 +1,12 @@
-/* =============================================================================
-   AtencionesSalud - Dominio REEMBOLSOS
-   1.1.  TABLAS
-   Incluye: extension de geografia (Region), catalogos propios de reembolsos,
-   tabla de hechos, staging, tabla de auditoria (usada por el trigger de la
-   seccion 1.3) y la vista con supresion de celdas pequeñas. Ejecutar despues
-   de AtencionesSalud_completo.sql.
-   ============================================================================= */
+GO
+
+GO
+
+IF DB_ID(N'AtencionesSalud') IS NULL
+    CREATE DATABASE AtencionesSalud;
+GO
+USE AtencionesSalud;
+GO
 
 USE AtencionesSalud;
 GO
@@ -144,11 +145,6 @@ CREATE TABLE reembolsos.stg_Reembolsos (
 );
 GO
 
--- BULK INSERT reembolsos.stg_Reembolsos
--- FROM 'C:\datos\Dataset_Reembolsos_Atendidos_20251231.csv'
--- WITH (FORMAT = 'CSV', FIELDTERMINATOR = ';', FIRSTROW = 2, CODEPAGE = '1252', TABLOCK);
--- GO
-
 -- ---------- Tabla de auditoria (la usa el trigger de la seccion 1.3) ----------
 
 CREATE TABLE reembolsos.LogAuditoriaReembolso (
@@ -163,12 +159,6 @@ CREATE TABLE reembolsos.LogAuditoriaReembolso (
     CONSTRAINT PK_LogAuditoriaReembolso PRIMARY KEY (AuditId)
 );
 GO
-
--- ---------- Vista con supresion de celdas pequeñas ----------
--- 229 de 386 filas del CSV tienen <=2 asegurados; cruzadas con categorias
--- angostas (p. ej. "FALLECIDO" = 6 filas en todo el pais) hay riesgo de
--- reidentificacion. Esta vista agrega sin Parentesco/Situacion y oculta con
--- HAVING cualquier grupo con menos de 5 asegurados.
 
 CREATE VIEW reembolsos.vw_ReembolsosAgregado
 AS
@@ -186,10 +176,6 @@ JOIN reembolsos.TipoAtencion ta ON ta.TipoAtencionId = reem.TipoAtencionId
 GROUP BY r.Nombre, sd.Nombre, ta.Nombre, reem.Periodo
 HAVING SUM(reem.NumeroAsegurados) >= 5;
 GO
-
--- ---------- Permisos sobre los objetos de esta seccion ----------
--- (complementa AtencionesSalud_roles.sql; no es una de las 4 secciones pero
---  se incluye aqui porque opera directamente sobre las tablas/vista de arriba)
 
 GRANT CREATE TABLE, CREATE VIEW ON SCHEMA::reembolsos TO rol_administrador_bd;
 GRANT ALTER, SELECT, INSERT, UPDATE, DELETE ON SCHEMA::reembolsos TO rol_administrador_bd;

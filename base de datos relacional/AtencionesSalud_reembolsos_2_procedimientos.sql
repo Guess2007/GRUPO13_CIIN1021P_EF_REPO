@@ -7,25 +7,6 @@
 USE AtencionesSalud;
 GO
 
-/* -----------------------------------------------------------------------------
-   reembolsos.sp_CargarReembolsos
-   Proposito:
-     Descartar filas basura del staging (78 de 464 vienen completamente en
-     blanco: pie de pagina del export a Excel), poblar los catalogos, limpiar
-     el monto ("S/ 1,225,889.22" -> 1225889.22) y cargar la tabla de hechos.
-     Reutiliza dbo.LogCargaETL (generica, no exclusiva del dominio de
-     atenciones) para registrar cada ejecucion.
-   Parametros:
-     @FilasInsertadas  OUTPUT INT - filas nuevas en reembolsos.Reembolso.
-     @FilasDescartadas OUTPUT INT - filas de staging vacias, descartadas.
-   Transaccion:
-     SET XACT_ABORT ON (todo o nada): es una sola carga por lotes mensual, sin
-     necesidad de un rollback parcial como en sp_CargarDimensiones.
-   Comportamiento ante excepciones:
-     Si falla el INSERT hacia reembolsos.Reembolso, XACT_ABORT revierte toda
-     la transaccion, se registra 'ERROR' en dbo.LogCargaETL con el mensaje de
-     error, y se relanza la excepcion con THROW.
-   ----------------------------------------------------------------------------- */
 CREATE PROCEDURE reembolsos.sp_CargarReembolsos
     @FilasInsertadas  INT OUTPUT,
     @FilasDescartadas INT OUTPUT

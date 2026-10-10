@@ -8,23 +8,6 @@
 USE AtencionesSalud;
 GO
 
-/* -----------------------------------------------------------------------------
-   reembolsos.trg_Reembolso_Auditoria  (trigger DML de auditoria)
-   Proposito:
-     Igual que dbo.trg_Atencion_Auditoria, pero sobre reembolsos.Reembolso, y
-     con mas motivo: aqui la medida es dinero (MontoPagado), no un conteo de
-     personas, asi que dejar rastro de quien modifico un monto y cual era el
-     valor anterior es mas critico. Registra cada INSERT/UPDATE/DELETE en
-     reembolsos.LogAuditoriaReembolso, distinguiendo la operacion por la
-     presencia de la fila en "inserted"/"deleted".
-   Parametros:
-     No aplica (usa las tablas logicas "inserted" y "deleted" de SQL Server).
-   Comportamiento ante excepciones:
-     Sin TRY/CATCH propio, a proposito: si el INSERT hacia el log fallara, el
-     error debe abortar tambien la operacion original sobre Reembolso, para
-     que nunca quede un cambio de monto sin auditar. Esa propagacion es el
-     comportamiento por defecto de un trigger AFTER en SQL Server.
-   ----------------------------------------------------------------------------- */
 CREATE TRIGGER reembolsos.trg_Reembolso_Auditoria
 ON reembolsos.Reembolso
 AFTER INSERT, UPDATE, DELETE

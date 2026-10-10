@@ -1,9 +1,13 @@
 ﻿/* =============================================================================
    AtencionesSalud - INSERT literales para dbo.stg_Atenciones (MUESTRA)
    Contiene 2000 filas de ejemplo (de 1,048,575 totales en el CSV).
+   Ejecutar DESPUES de AtencionesSalud_atenciones_1_tablas.sql (crea dbo.stg_Atenciones
+   que este script llena). Despues de este archivo sigue
+   AtencionesSalud_atenciones_2_procedimientos.sql para conectar estos datos con el
+   resto del modelo (Red, Microred, Establecimiento... y la tabla de hechos Atencion).
    ADVERTENCIA: generar el archivo COMPLETO como INSERT pesaria ~171 MB y no es
    practico de ejecutar. Para cargar las 1,048,575 filas reales usa BULK INSERT
-   (ver AtencionesSalud_sqlserver.sql / seccion 1.1 de AtencionesSalud_1_diseño_bd.sql).
+   (ver AtencionesSalud_sqlserver.sql / AtencionesSalud_atenciones_1_tablas.sql).
    Usa este archivo solo para pruebas, demos o si tu profesor exige ver literalmente
    sentencias INSERT; pide el resto en lotes adicionales si lo necesitas completo.
    ============================================================================= */
